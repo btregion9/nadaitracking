@@ -15,8 +15,18 @@
     </style>
 </head>
 <body>
-    <iframe 
-        src="https://script.google.com/macros/s/AKfycby9HjzSsemcE7rEkxw-6efj4LMC1Yxa0TDJGCNx2s7BxWsXnJqzOR1XcMVwE8MQRi9u/exec"
-    ></iframe>
+    <!-- The iframe src is intentionally left blank here so JavaScript can build it -->
+    <iframe id="nadaiIframe"></iframe>
+
+    <script>
+        // 1. Grab the email saved by your BTr IX Login portal on this domain
+        const activeUser = localStorage.getItem('loggedUserEmail') || "";
+        
+        // 2. Your base Google Apps Script deployment link
+        const baseUrl = "https://script.google.com/macros/s/AKfycby9HjzSsemcE7rEkxw-6efj4LMC1Yxa0TDJGCNx2s7BxWsXnJqzOR1XcMVwE8MQRi9u/exec";
+        
+        // 3. Attach the email to the URL and load the iframe
+        document.getElementById("nadaiIframe").src = baseUrl + "?user=" + encodeURIComponent(activeUser);
+    </script>
 </body>
 </html>
