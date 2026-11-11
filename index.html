@@ -4,30 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BTr 9 NADAI Tracking</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/btregion9/assets/79103198eaf9ed8feb8979dc4c7ab03d3f77acfd/BTr-Original-Logo-1.png">
     <style>
-        body, html {
-            margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #f8fafc;
-        }
-        iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
-        }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #f8fafc; }
+        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
-    <!-- The iframe src is intentionally left blank here so JavaScript can build it -->
     <iframe id="nadaiIframe"></iframe>
 
     <script>
-    const activeUser = localStorage.getItem('loggedUserEmail') || "";
-    console.log("GitHub sees user:", activeUser); // <-- Added diagnostic
-
-    const baseUrl = "https://script.google.com/macros/s/AKfycby9HjzSsemcE7rEkxw-6efj4LMC1Yxa0TDJGCNx2s7BxWsXnJqzOR1XcMVwE8MQRi9u/exec";
-    const finalUrl = baseUrl + "?user=" + encodeURIComponent(activeUser);
-    
-    console.log("Loading this exact iframe URL:", finalUrl); // <-- Added diagnostic
-    
-    document.getElementById("nadaiIframe").src = finalUrl;
-</script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Try to get the email from storage
+            let activeUser = localStorage.getItem('loggedUserEmail');
+            
+            // 2. FAIL-SAFE: If storage is empty, force the admin email for testing
+            if (!activeUser) {
+                activeUser = 'region09@treasury.gov.ph';
+                console.log("Storage empty. Using fallback:", activeUser);
+            } else {
+                console.log("Found in storage:", activeUser);
+            }
+            
+            // 3. Build the URL and load the iframe
+            const baseUrl = "https://script.google.com/macros/s/AKfycby9HjzSsemcE7rEkxw-6efj4LMC1Yxa0TDJGCNx2s7BxWsXnJqzOR1XcMVwE8MQRi9u/exec";
+            const finalUrl = baseUrl + "?user=" + encodeURIComponent(activeUser);
+            
+            console.log("Injecting this URL into iframe:", finalUrl);
+            document.getElementById("nadaiIframe").src = finalUrl;
+        });
+    </script>
 </body>
 </html>
